@@ -6,6 +6,7 @@ import { graphqlHTTP } from 'express-graphql';
 import { schema } from '@/api/schema';
 import { makeUserModule } from '@/modules/user';
 import { UserModule } from '@/modules/user/interfaces/user-module.interface';
+import { LoggerService } from '@/modules/logger';
 
 dotenv.config();
 
@@ -33,6 +34,9 @@ export const bootstrap: () => Server = (): Server => {
   const port: number = Number(process.env.PORT);
   const server: Server = app.listen(port);
 
-  console.log(`GraphQL server started on port ${port}`);
+  const logger: LoggerService = new LoggerService(process.env.NODE_ENV, 'server');
+  logger.prefix = 'global';
+
+  logger.info(`GraphQL server started on port ${port}`);
   return server;
 };
