@@ -1,10 +1,13 @@
 import { Server } from 'http';
+import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 
 import { schema } from '@/api/schema';
 import { makeUserModule } from '@/modules/user';
 import { UserModule } from '@/modules/user/interfaces/user-module.interface';
+
+dotenv.config();
 
 export const bootstrap: () => Server = (): Server => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,8 +30,9 @@ export const bootstrap: () => Server = (): Server => {
     }),
   );
 
-  const server: Server = app.listen(4000);
-  console.log('GraphQL server started on port 4000');
+  const port: number = Number(process.env.PORT);
+  const server: Server = app.listen(port);
 
+  console.log(`GraphQL server started on port ${port}`);
   return server;
 };

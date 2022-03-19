@@ -1,0 +1,1 @@
+ignores: ["@types/jest", "@test/*", "ts-jest", "express", "eslint-config-airbnb-base"]

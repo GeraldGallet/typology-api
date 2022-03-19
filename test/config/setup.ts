@@ -1,15 +1,23 @@
 import { Server } from 'http';
+import * as dotenv from 'dotenv';
 import * as supertest from 'supertest';
 
 import { bootstrap } from '@/server';
 
+dotenv.config();
+
 class TestingModule {
   private _server: Server;
   private _testingApp: supertest.SuperTest<supertest.Test>;
+  private _oldEnv = process.env;
 
   public init(): void {
     this._server = bootstrap();
     this._testingApp = supertest(this._server);
+    process.env = {
+      ...this._oldEnv,
+      NODE_ENV: 'test',
+    };
   }
 
   public getTestingApp(): supertest.SuperTest<supertest.Test> {
@@ -17,6 +25,8 @@ class TestingModule {
   }
 
   public close(): void {
+    process.env = this._oldEnv;
+
     this._server.close();
   }
 }
