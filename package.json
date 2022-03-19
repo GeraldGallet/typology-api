@@ -22,7 +22,7 @@
     "check:lint": "eslint \"{src,apps,libs,test}/**/*.ts\" && npx prettier --write .eslintrc.json",
     "dev": "nodemon ./index.ts",
     "start": "ts-node -r tsconfig-paths/register ./index.ts",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "jest --no-cache --runInBand --config ./test/jest-e2e.json",
     "test:e2e:watch": "npm run test:e2e -- --watchAll"
   },
   "repository": {

@@ -1,7 +1,10 @@
 import { Server } from 'http';
+import * as dotenv from 'dotenv';
 import * as supertest from 'supertest';
 
 import { bootstrap } from '@/server';
+
+dotenv.config();
 
 class TestingModule {
   private _server: Server;
