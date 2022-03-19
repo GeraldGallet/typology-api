@@ -12,7 +12,7 @@ export class UserRepository {
         lastName: 'Gallet',
       },
       {
-        email: 'camille.caloin@yahoo.cofrm',
+        email: 'camille.caloin@yahoo.com',
         firstName: 'Camille',
         id: '2',
         lastName: 'Caloin',
