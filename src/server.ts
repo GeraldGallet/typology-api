@@ -1,16 +1,12 @@
 import { Server } from 'http';
 import * as express from 'express';
 import { graphqlHTTP } from 'express-graphql';
-import { buildSchema, GraphQLSchema } from 'graphql';
+
+import { schema } from '@/api/schema';
+import { makeUserModule } from '@/modules/user';
+import { UserModule } from '@/modules/user/interfaces/user-module.interface';
 
 export const bootstrap: () => Server = (): Server => {
-  // Construct a schema, using GraphQL schema language
-  const schema: GraphQLSchema = buildSchema(`
-    type Query {
-      hello: String
-    }
-  `);
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const root: any = {
     hello: () => {
@@ -18,12 +14,15 @@ export const bootstrap: () => Server = (): Server => {
     },
   };
 
+  const userModule: UserModule = makeUserModule();
+
   const app: express.Application = express();
+
   app.use(
     '/graphql',
     graphqlHTTP({
       schema: schema,
-      rootValue: root,
+      rootValue: { ...root, ...userModule.controller },
       graphiql: true,
     }),
   );
