@@ -1,10 +1,12 @@
-import { ReadUserRequestInterface } from '@/modules/user/interfaces/requests/read-user-request.interface';
-import { UserInterface } from '@/modules/user/interfaces/entities/user.interface';
+import type { CreateUserRequestInterface } from '@/modules/user/interfaces/requests/create-user-request.interface';
+import type { ReadUserRequestInterface } from '@/modules/user/interfaces/requests/read-user-request.interface';
+import type { UserInterface } from '@/modules/user/interfaces/entities/user.interface';
 import { UserService } from '@/modules/user/services/user.service';
 import { LoggerService } from '@/modules/logger';
 
 export interface UserControllerInterface {
-  user: (data: ReadUserRequestInterface) => UserInterface;
+  createUser: (data: CreateUserRequestInterface) => Promise<UserInterface>;
+  user: (data: ReadUserRequestInterface) => Promise<UserInterface>;
 }
 
 export class UserController {
@@ -18,15 +20,26 @@ export class UserController {
     this._logger.prefix = 'controller';
   }
 
-  public user({ id }: ReadUserRequestInterface): UserInterface {
-    this._logger.debug(`Getting user with ID '${id}'`);
+  public async createUser(data: Omit<UserInterface, '_id'>): Promise<UserInterface> {
+    this._logger.debug('Creating new user');
 
-    return this._service.read(id);
+    const createdUser: UserInterface = await this._service.create(data);
+
+    return createdUser;
+  }
+
+  public async user(_id: string): Promise<UserInterface> {
+    this._logger.debug(`Getting user with ID '${_id}'`);
+
+    const user: UserInterface = await this._service.read(_id);
+
+    return user;
   }
 
   public get(): UserControllerInterface {
     return {
-      user: (data: ReadUserRequestInterface) => this.user(data),
+      createUser: ({ input }: CreateUserRequestInterface) => this.createUser(input),
+      user: ({ _id }: ReadUserRequestInterface) => this.user(_id),
     };
   }
 }

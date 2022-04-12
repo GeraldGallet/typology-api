@@ -1,13 +1,17 @@
 import { buildSchema, GraphQLSchema } from 'graphql';
 
-import { schema as userSchema } from '@/modules/user/schemas/user.schema';
+import { mutation as userMutation, query as userQuery, schema as userSchema } from '@/modules/user/schemas/user.schema';
 
 const rootSchema: string = `
   ${userSchema}
 
   type Query {
     hello: String
-    user(id: String): User
+    ${userQuery}
+  }
+
+  type Mutation {
+    ${userMutation}
   }
 `;
 

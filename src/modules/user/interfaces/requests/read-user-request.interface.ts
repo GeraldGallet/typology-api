@@ -1,3 +1,3 @@
 export interface ReadUserRequestInterface {
-  id: string;
+  _id: string;
 }

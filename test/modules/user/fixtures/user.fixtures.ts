@@ -5,20 +5,19 @@ export interface UserFixtureInterface<T> {
   result: T;
 }
 
-export const shouldFindUserFixture: UserFixtureInterface<{ user: UserInterface }> = {
-  query: '{ user(id: "1") { email firstName id lastName } }',
+export const shouldFindUserFixture: UserFixtureInterface<{ user: Partial<UserInterface> }> = {
+  query: '{ user(_id: "012345678910") { email firstName lastName } }',
   result: {
     user: {
-      email: 'gerald.gallet.gg@gmail.com',
-      firstName: 'Gérald',
-      id: '1',
-      lastName: 'Gallet',
+      email: 'user.1@email.com',
+      firstName: 'User',
+      lastName: 'One',
     },
   },
 };
 
-export const shouldNotFindUserFixture: UserFixtureInterface<{ user: UserInterface }> = {
-  query: '{ user(id: "10") { email firstName id lastName } }',
+export const shouldNotFindUserFixture: UserFixtureInterface<{ user: Partial<UserInterface> }> = {
+  query: '{ user(_id: "10") { email firstName lastName } }',
   result: {
     user: null,
   },
